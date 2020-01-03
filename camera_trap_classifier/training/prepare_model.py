@@ -319,6 +319,6 @@ def create_model(model_name,
     model.compile(loss=build_masked_loss(K.sparse_categorical_crossentropy),
                   optimizer=opt,
                   loss_weights=output_loss_weights,
-                  metrics=[accuracy, top_k_accuracy])
+                  metrics=[accuracy]) # see only one?
 
     return model
