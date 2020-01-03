@@ -102,7 +102,7 @@ def accuracy(y_true, y_pred, mask_value=-1):
     acc = sparse_categorical_accuracy(tf.boolean_mask(y_true, mask),
                                       tf.boolean_mask(y_pred, mask))
     # return 0 if result is empty
-    res_size = tf.shape(acc)[0]
+    res_size = tf.reshape( tf.shape(acc)[0] , [] )
     acc_filtered = tf.cond(tf.equal(res_size, 0),
                            lambda: tf.constant(0, tf.float32),
                            lambda: acc)
