@@ -106,7 +106,6 @@ def accuracy(y_true, y_pred, mask_value=-1):
     acc_filtered = tf.cond(tf.equal(res_size, 0),
                            lambda: tf.constant(0, tf.float32),
                            lambda: acc)
-    acc_filtered = tf.reshape(acc_filtered,[])
     return acc_filtered
 
 
@@ -119,5 +118,4 @@ def top_k_accuracy(y_true, y_pred, mask_value=-1, k=5):
     acc_filtered = tf.cond(tf.is_nan(acc),
                            lambda: tf.constant(0, tf.float32),
                            lambda: acc)
-    acc_filtered = tf.reshape(acc_filtered,[])
     return acc_filtered
