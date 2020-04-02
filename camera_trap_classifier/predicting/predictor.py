@@ -39,7 +39,7 @@ class Predictor(object):
         self.aggregation_mode = aggregation_mode
         self.class_mapping = None
         self.pre_processing = None
-        self.session = tf.keras.backend.get_session()
+        self.session = tf.compat.v1.keras.backend.get_session()
 
         # check file existence
         path_names = ['model_path', 'class_mapping_json',
@@ -241,7 +241,7 @@ class Predictor(object):
     def _get_and_transform_image(self, _id, image_paths, pre_proc_args):
         """ Process a list of 1-N images """
         images_raw = tf.map_fn(
-                        lambda x: tf.read_file(x),
+                        lambda x: tf.io.read_file(x),
                         image_paths, dtype=tf.string)
         # decode images
         image_decoded = decode_image_bytes_1D(images_raw, **pre_proc_args)
@@ -336,7 +336,7 @@ class Predictor(object):
         """ Iterate through dataset and feed to model """
 
         # Create Dataset Iterator
-        iterator = dataset.make_one_shot_iterator()
+        iterator = tf.compat.v1.data.make_one_shot_iterator(dataset)
         batch_data = iterator.get_next()
 
         # collect all labels

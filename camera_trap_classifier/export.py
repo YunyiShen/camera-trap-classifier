@@ -96,7 +96,7 @@ def main():
         :return: ServingInputReciever
         """
         # Input Tensor (list of image bytes)
-        list_of_image_bytes = tf.placeholder(shape=[1], dtype=tf.string)
+        list_of_image_bytes = tf.compat.v1.placeholder(shape=[1], dtype=tf.string)
         receiver_tensors = {
             'image': list_of_image_bytes
         }

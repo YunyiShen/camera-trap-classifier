@@ -84,7 +84,7 @@ class GaussianKernelTests(tf.test.TestCase):
 
         kernel = gaussian_kernel_2D(sigma)
         expected = tf.constant(expected, tf.float32)
-        ratio = tf.div(kernel, expected)
+        ratio = tf.compat.v1.div(kernel, expected)
 
         with self.test_session():
             self.assertAllInRange(ratio.eval(), 0.99, 1.01)

@@ -99,24 +99,24 @@ def accuracy(y_true, y_pred, mask_value=-1):
     """ Accuracy with Masking """
     # mask = K.not_equal(y_true, mask_value)
     mask = K.squeeze(K.not_equal(y_true, mask_value), axis=-1)
-    acc = sparse_categorical_accuracy(tf.boolean_mask(y_true, mask),
-                                      tf.boolean_mask(y_pred, mask))
+    acc = sparse_categorical_accuracy(tf.boolean_mask(tensor=y_true, mask=mask),
+                                      tf.boolean_mask(tensor=y_pred, mask=mask))
     # return 0 if result is empty
-    res_size = tf.reshape( tf.shape(acc)[0] , [] )
-    acc_filtered = tf.cond(tf.equal(res_size, 0),
-                           lambda: tf.constant(0, tf.float32),
-                           lambda: acc)
+    res_size = tf.reshape( tf.shape(input=acc)[0] , [] )
+    acc_filtered = tf.cond(pred=tf.equal(res_size, 0),
+                           true_fn=lambda: tf.constant(0, tf.float32),
+                           false_fn=lambda: acc)
     return acc_filtered
 
 
 def top_k_accuracy(y_true, y_pred, mask_value=-1, k=5):
     """ Top-K Accuracy with Masking """
     mask = K.squeeze(K.not_equal(y_true, mask_value), axis=-1)
-    acc = sparse_top_k_categorical_accuracy(tf.boolean_mask(y_true, mask),
-                                            tf.boolean_mask(y_pred, mask), k=k)
+    acc = sparse_top_k_categorical_accuracy(tf.boolean_mask(tensor=y_true, mask=mask),
+                                            tf.boolean_mask(tensor=y_pred, mask=mask), k=k)
     # return 0 if result is nan
     acc = tf.reshape(acc,[-1])
-    acc_filtered = tf.cond(tf.is_nan(acc),
-                           lambda: tf.constant(0, tf.float32,shape = tf.shape(acc)),
-                           lambda: acc)
+    acc_filtered = tf.cond(pred=tf.math.is_nan(acc),
+                           true_fn=lambda: tf.constant(0, tf.float32,shape = tf.shape(input=acc)),
+                           false_fn=lambda: acc)
     return acc_filtered

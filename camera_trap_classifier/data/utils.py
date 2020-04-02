@@ -309,7 +309,7 @@ def n_records_in_tfr(tfr_path):
         tfr_path = [tfr_path]
     total = 0
     for path in tfr_path:
-        total += sum(1 for _ in tf.python_io.tf_record_iterator(path))
+        total += sum(1 for _ in tf.compat.v1.python_io.tf_record_iterator(path))
     return total
 
 
@@ -346,11 +346,11 @@ def n_records_in_tfr_dataset(tfr_path,
                         lambda x, y: x,
                         batch_size=batch_size))
     dataset = dataset.repeat(1)
-    iterator = dataset.make_one_shot_iterator()
+    iterator = tf.compat.v1.data.make_one_shot_iterator(dataset)
     batch = iterator.get_next()
 
     # Loop once over the whole dataset
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         n_batches = 0
         while True:
             try:
@@ -384,7 +384,7 @@ def n_records_in_tfr_parallel(tfr_path, n_processes=4):
 
 
 def check_tfrecord_contents(path_to_tfr):
-    record_iterator = tf.python_io.tf_record_iterator(path_to_tfr)
+    record_iterator = tf.compat.v1.python_io.tf_record_iterator(path_to_tfr)
     for record in record_iterator:
         example = tf.train.Example()
         example.ParseFromString(record)

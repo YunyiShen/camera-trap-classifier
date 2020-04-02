@@ -385,11 +385,11 @@ def main():
                                        'is_training': False},
             buffer_size=min([args['buffer_size'], 128]),
             num_parallel_calls=args['n_cpus'])
-    iterator = dataset.make_one_shot_iterator()
+    iterator = tf.compat.v1.data.make_one_shot_iterator(dataset)
     batch_data = iterator.get_next()
 
     logger.info("Calculating image means and stdevs")
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         features, labels = sess.run(batch_data)
 
     # calculate and save image means and stdvs of each color channel

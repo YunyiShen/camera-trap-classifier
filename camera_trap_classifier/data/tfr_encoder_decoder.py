@@ -101,47 +101,47 @@ class DefaultTFRecordEncoderDecoder(TFRecordEncoderDecoder):
         # fixed size Features - ID and labels
         if return_only_ml_data:
             context_features = {
-                'id': tf.FixedLenFeature([], tf.string)
+                'id': tf.io.FixedLenFeature([], tf.string)
                 }
         else:
             context_features = {
-                'id': tf.FixedLenFeature([], tf.string),
-                'n_images': tf.FixedLenFeature([], tf.int64),
-                'n_labels': tf.FixedLenFeature([], tf.int64),
-                'meta_data': tf.FixedLenFeature([], tf.string),
-                'labelstext': tf.FixedLenFeature([], tf.string)
+                'id': tf.io.FixedLenFeature([], tf.string),
+                'n_images': tf.io.FixedLenFeature([], tf.int64),
+                'n_labels': tf.io.FixedLenFeature([], tf.int64),
+                'meta_data': tf.io.FixedLenFeature([], tf.string),
+                'labelstext': tf.io.FixedLenFeature([], tf.string)
                 }
 
         # Extract labels (string and numeric)
         label_names = ['label/' + l for l in output_labels]
-        label_features = {k: tf.FixedLenSequenceFeature([], tf.string)
+        label_features = {k: tf.io.FixedLenSequenceFeature([], tf.string)
                           for k in label_names}
 
         label_num_names = ['label_num/' + l for l in output_labels]
-        label_num_features = {k: tf.FixedLenSequenceFeature([], tf.int64)
+        label_num_features = {k: tf.io.FixedLenSequenceFeature([], tf.int64)
                               for k in label_num_names}
 
         if return_only_ml_data:
             if numeric_labels:
                 sequence_features = {
-                    'images': tf.FixedLenSequenceFeature([], tf.string),
+                    'images': tf.io.FixedLenSequenceFeature([], tf.string),
                     **label_num_features
                     }
             else:
                 sequence_features = {
-                    'images': tf.FixedLenSequenceFeature([], tf.string),
+                    'images': tf.io.FixedLenSequenceFeature([], tf.string),
                     **label_features
                     }
         else:
             sequence_features = {
-                'images': tf.FixedLenSequenceFeature([], tf.string),
-                'image_paths': tf.FixedLenSequenceFeature([], tf.string),
+                'images': tf.io.FixedLenSequenceFeature([], tf.string),
+                'image_paths': tf.io.FixedLenSequenceFeature([], tf.string),
                 **label_features,
                 **label_num_features
                 }
 
         # Parse the serialized data so we get a dict with our data.
-        context, sequence = tf.parse_single_sequence_example(
+        context, sequence = tf.io.parse_single_sequence_example(
                 serialized=serialized_example,
                 context_features=context_features,
                 sequence_features=sequence_features)

@@ -129,7 +129,7 @@ class TableInitializerCallback(Callback):
     """ Initialize Tables - required with initializable tf.datasets
     """
     def on_train_begin(self, logs=None):
-        K.get_session().run(tf.tables_initializer())
+        K.get_session().run(tf.compat.v1.tables_initializer())
 
 
 class LoggingLogger(Callback):

@@ -14,7 +14,7 @@ from camera_trap_classifier.data.image import (
 from camera_trap_classifier.data.utils import (
     slice_generator, estimate_remaining_time)
 
-tf.enable_eager_execution()
+tf.compat.v1.enable_eager_execution()
 
 logger = logging.getLogger(__name__)
 
@@ -184,7 +184,7 @@ class DatasetWriter(object):
         # a write is incomplete
 
         output_temp = output_file + '_temp'
-        with tf.python_io.TFRecordWriter(output_temp) as writer:
+        with tf.io.TFRecordWriter(output_temp) as writer:
 
             for i, record_id in enumerate(record_ids):
 
@@ -239,7 +239,7 @@ class DatasetWriter(object):
         # a write is incomplete
 
         output_temp = output_file + '_temp'
-        with tf.python_io.TFRecordWriter(output_temp) as writer:
+        with tf.io.TFRecordWriter(output_temp) as writer:
 
             for batch_i, (start_i, end_i) in enumerate(slices):
 
